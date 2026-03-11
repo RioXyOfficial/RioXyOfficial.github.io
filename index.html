@@ -1,0 +1,916 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RioXy - Portfolio</title>
+
+    <!-- Quand tu envoies ton lien sur Discord, ça affiche un joli embed violet avec titre + description au lieu d'un lien moche -->
+    <meta name="description" content="RioXy - Roblox Developer with 4 years of experience. Available for hire.">
+    <meta property="og:title" content="RioXy - Portfolio">
+    <meta property="og:description" content="18 y/o Roblox developer from Switzerland. 4 years experience. Available for hire.">
+    <meta property="og:type" content="website">
+    <meta name="theme-color" content="#7c3aed">
+
+    <!-- Favicon violet -->
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><circle cx='50' cy='50' r='42' fill='%237c3aed'/><text x='50' y='68' font-size='55' font-weight='bold' fill='white' text-anchor='middle' font-family='sans-serif'>R</text></svg>">
+
+    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=Outfit:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Outfit', sans-serif;
+            background: #05050e;
+            color: #9e99b8;
+            line-height: 1.7;
+            -webkit-font-smoothing: antialiased;
+            overflow-x: hidden;
+        }
+
+        ::selection {
+            background: rgba(124, 58, 237, 0.35);
+            color: #fff;
+        }
+
+        /* ===== AMBIENT ===== */
+        .ambient {
+            position: fixed;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        .ambient-1 {
+            top: -200px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 800px;
+            height: 500px;
+            background: radial-gradient(ellipse, rgba(124, 58, 237, 0.06) 0%, transparent 70%);
+        }
+
+        .ambient-2 {
+            bottom: 20%;
+            right: -200px;
+            width: 500px;
+            height: 500px;
+            background: radial-gradient(circle, rgba(76, 29, 149, 0.04) 0%, transparent 70%);
+        }
+
+        /* ===== PAGE ===== */
+        .page {
+            max-width: 720px;
+            margin: 0 auto;
+            padding: 0 24px 80px;
+            position: relative;
+            z-index: 1;
+        }
+
+        /* ===== NAV ===== */
+        nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 100;
+            padding: 0 24px;
+            height: 58px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 36px;
+            background: rgba(5, 5, 14, 0.85);
+            backdrop-filter: blur(30px);
+            -webkit-backdrop-filter: blur(30px);
+            border-bottom: 1px solid rgba(124, 58, 237, 0.08);
+        }
+
+        nav a {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 0.72rem;
+            color: #7a7594;
+            text-decoration: none;
+            letter-spacing: 0.4px;
+            transition: color 0.4s;
+            font-weight: 500;
+        }
+
+        nav a:hover {
+            color: #c4b5fd;
+        }
+
+        /* ===== HERO ===== */
+        .hero {
+            padding-top: 140px;
+            margin-bottom: 90px;
+        }
+
+        .available-tag {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 0.66rem;
+            color: #a78bfa;
+            letter-spacing: 0.8px;
+            margin-bottom: 28px;
+            padding: 8px 18px;
+            border-radius: 100px;
+            border: 1px solid rgba(167, 139, 250, 0.12);
+            background: rgba(167, 139, 250, 0.03);
+            text-transform: uppercase;
+        }
+
+        .available-tag .dot {
+            width: 6px;
+            height: 6px;
+            background: #a78bfa;
+            border-radius: 50%;
+            box-shadow: 0 0 12px rgba(167, 139, 250, 0.6);
+            animation: shadowPulse 3s ease-in-out infinite;
+        }
+
+        @keyframes shadowPulse {
+            0%, 100% { opacity: 1; box-shadow: 0 0 12px rgba(167, 139, 250, 0.6); }
+            50% { opacity: 0.4; box-shadow: 0 0 4px rgba(167, 139, 250, 0.2); }
+        }
+
+        .hero h1 {
+            font-size: 3.8rem;
+            font-weight: 900;
+            color: #edecf5;
+            letter-spacing: -2.5px;
+            line-height: 1.02;
+            margin-bottom: 28px;
+        }
+
+        .hero h1 .glow {
+            background: linear-gradient(135deg, #a78bfa, #7c3aed, #6d28d9);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            filter: drop-shadow(0 0 30px rgba(124, 58, 237, 0.3));
+        }
+
+        .hero .summary {
+            font-size: 1.05rem;
+            color: #7d7898;
+            max-width: 500px;
+            font-weight: 400;
+            line-height: 1.9;
+        }
+
+        .hero .summary strong {
+            color: #d6d0ec;
+            font-weight: 600;
+        }
+
+        /* ===== METRICS ===== */
+        .metrics {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1px;
+            background: #13122a;
+            border-radius: 16px;
+            overflow: hidden;
+            margin-bottom: 90px;
+            box-shadow: 0 0 60px rgba(124, 58, 237, 0.03);
+        }
+
+        .metric {
+            background: #0a0a18;
+            padding: 36px 20px;
+            text-align: center;
+            transition: background 0.5s;
+            position: relative;
+        }
+
+        .metric::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 0;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, #7c3aed, transparent);
+            transition: width 0.5s;
+        }
+
+        .metric:hover::after {
+            width: 60%;
+        }
+
+        .metric:hover {
+            background: #0d0d1e;
+        }
+
+        .metric .val {
+            font-size: 2.2rem;
+            font-weight: 800;
+            color: #edecf5;
+            letter-spacing: -1px;
+        }
+
+        .metric .label {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 0.6rem;
+            color: #4a4668;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin-top: 8px;
+        }
+
+        /* ===== SECTION ===== */
+        .section {
+            margin-bottom: 80px;
+        }
+
+        .section:last-of-type {
+            margin-bottom: 0;
+        }
+
+        .section-header {
+            display: flex;
+            align-items: center;
+            gap: 18px;
+            margin-bottom: 36px;
+        }
+
+        .section-header h2 {
+            font-size: 0.68rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 3.5px;
+            color: #4a4668;
+            white-space: nowrap;
+        }
+
+        .section-header .divider {
+            flex: 1;
+            height: 1px;
+            background: linear-gradient(90deg, #1a1838, transparent);
+        }
+
+        /* ===== CARDS ===== */
+        .card {
+            background: #0a0a18;
+            border: 1px solid #13122a;
+            border-radius: 16px;
+            padding: 36px;
+            margin-bottom: 16px;
+            transition: border-color 0.5s ease, transform 0.3s ease, box-shadow 0.5s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, rgba(124, 58, 237, 0), transparent);
+            transition: background 0.5s;
+        }
+
+        .card:hover::before {
+            background: linear-gradient(90deg, transparent, rgba(124, 58, 237, 0.3), transparent);
+        }
+
+        .card:hover {
+            border-color: #1e1b3a;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 40px rgba(124, 58, 237, 0.04);
+        }
+
+        .card-top {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 16px;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .card h3 {
+            font-size: 1.15rem;
+            font-weight: 700;
+            color: #e2dff5;
+            letter-spacing: -0.3px;
+        }
+
+        .pill {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 0.58rem;
+            letter-spacing: 0.8px;
+            color: #a78bfa;
+            border: 1px solid rgba(167, 139, 250, 0.12);
+            background: rgba(167, 139, 250, 0.04);
+            padding: 5px 14px;
+            border-radius: 100px;
+            font-weight: 500;
+            text-transform: uppercase;
+        }
+
+        .card p {
+            font-size: 0.92rem;
+            color: #7d7898;
+            line-height: 1.85;
+        }
+
+        .card-meta {
+            display: flex;
+            gap: 28px;
+            margin-top: 22px;
+            padding-top: 20px;
+            border-top: 1px solid #13122a;
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 0.66rem;
+            color: #4a4668;
+            flex-wrap: wrap;
+        }
+
+        .card-meta strong {
+            color: #9e99b8;
+            font-weight: 600;
+        }
+
+        .highlight-card {
+            background: linear-gradient(160deg, rgba(124, 58, 237, 0.04), rgba(76, 29, 149, 0.01), #0a0a18);
+            border-color: rgba(124, 58, 237, 0.1);
+        }
+
+        .highlight-card:hover {
+            border-color: rgba(124, 58, 237, 0.2);
+            box-shadow: 0 8px 50px rgba(124, 58, 237, 0.06);
+        }
+
+        /* ===== ACCORDION ===== */
+        .accordion-toggle {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-top: 20px;
+            padding: 12px 18px;
+            background: rgba(124, 58, 237, 0.04);
+            border: 1px solid rgba(124, 58, 237, 0.08);
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.4s;
+            user-select: none;
+        }
+
+        .accordion-toggle:hover {
+            background: rgba(124, 58, 237, 0.07);
+            border-color: rgba(124, 58, 237, 0.15);
+        }
+
+        .accordion-toggle .play-icon {
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            background: rgba(124, 58, 237, 0.12);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.4s;
+            flex-shrink: 0;
+        }
+
+        .accordion-toggle:hover .play-icon {
+            background: rgba(124, 58, 237, 0.2);
+            box-shadow: 0 0 20px rgba(124, 58, 237, 0.15);
+        }
+
+        .accordion-toggle .play-icon svg {
+            width: 10px;
+            height: 10px;
+            fill: #a78bfa;
+            transition: transform 0.3s;
+        }
+
+        .accordion-toggle.active .play-icon svg {
+            transform: rotate(90deg);
+        }
+
+        .accordion-toggle .toggle-text {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 0.72rem;
+            color: #8a84a8;
+            letter-spacing: 0.3px;
+            font-weight: 500;
+        }
+
+        .accordion-toggle .arrow {
+            margin-left: auto;
+            font-size: 0.7rem;
+            color: #4a4668;
+            transition: transform 0.4s, color 0.4s;
+        }
+
+        .accordion-toggle.active .arrow {
+            transform: rotate(180deg);
+            color: #a78bfa;
+        }
+
+        .accordion-content {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.6s cubic-bezier(0.16, 1, 0.3, 1),
+                        opacity 0.4s ease,
+                        margin-top 0.4s ease;
+            opacity: 0;
+            margin-top: 0;
+        }
+
+        .accordion-content.open {
+            opacity: 1;
+            margin-top: 16px;
+        }
+
+        /* ===== VIDEO MP4 ===== */
+        .video-embed-mp4 {
+            border-radius: 10px;
+            overflow: hidden;
+            border: 1px solid #13122a;
+            background: #08081a;
+            aspect-ratio: 16 / 9;
+        }
+
+        .video-embed-mp4 video {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            outline: none;
+            background: #08081a;
+        }
+
+        .video-embed-mp4 video::-webkit-media-controls-panel {
+            background: rgba(10, 10, 24, 0.85);
+        }
+
+        /* ===== AVAILABILITY ===== */
+        .avail-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+        }
+
+        .avail-card {
+            background: #0a0a18;
+            border: 1px solid #13122a;
+            border-radius: 16px;
+            padding: 32px;
+            transition: all 0.4s;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .avail-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, rgba(124, 58, 237, 0), transparent);
+            transition: background 0.5s;
+        }
+
+        .avail-card:hover::before {
+            background: linear-gradient(90deg, transparent, rgba(124, 58, 237, 0.25), transparent);
+        }
+
+        .avail-card:hover {
+            border-color: #1e1b3a;
+        }
+
+        .avail-card .hours {
+            font-size: 1.6rem;
+            font-weight: 800;
+            color: #edecf5;
+            letter-spacing: -0.5px;
+        }
+
+        .avail-card .period {
+            font-size: 0.8rem;
+            color: #4a4668;
+            margin-top: 6px;
+        }
+
+        /* ===== CONTACT ===== */
+        .contact-grid {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+
+        .contact-link {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 0.72rem;
+            font-weight: 500;
+            padding: 14px 28px;
+            border-radius: 12px;
+            text-decoration: none;
+            border: 1px solid #13122a;
+            color: #7d7898;
+            background: #0a0a18;
+            transition: all 0.4s;
+            display: inline-flex;
+            align-items: center;
+            gap: 12px;
+            position: relative;
+            overflow: hidden;
+            cursor: pointer;
+        }
+
+        .contact-link::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(135deg, rgba(124, 58, 237, 0.06), transparent);
+            opacity: 0;
+            transition: opacity 0.4s;
+        }
+
+        .contact-link:hover::before {
+            opacity: 1;
+        }
+
+        .contact-link:hover {
+            color: #edecf5;
+            border-color: rgba(124, 58, 237, 0.25);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 20px rgba(124, 58, 237, 0.06);
+        }
+
+        .contact-link .letter {
+            width: 22px;
+            height: 22px;
+            border-radius: 6px;
+            background: #13122a;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.58rem;
+            color: #a78bfa;
+            font-weight: 600;
+            position: relative;
+            z-index: 1;
+            transition: background 0.4s;
+        }
+
+        .contact-link:hover .letter {
+            background: rgba(124, 58, 237, 0.15);
+        }
+
+        .contact-link span:last-child {
+            position: relative;
+            z-index: 1;
+        }
+
+        /* ===== COPIED TOAST ===== */
+        .toast {
+            position: fixed;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%) translateY(20px);
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 0.72rem;
+            color: #edecf5;
+            background: rgba(124, 58, 237, 0.15);
+            border: 1px solid rgba(124, 58, 237, 0.2);
+            backdrop-filter: blur(20px);
+            padding: 10px 24px;
+            border-radius: 10px;
+            opacity: 0;
+            pointer-events: none;
+            transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+            z-index: 200;
+        }
+
+        .toast.show {
+            opacity: 1;
+            transform: translateX(-50%) translateY(0);
+        }
+
+        /* ===== FOOTER ===== */
+        footer {
+            margin-top: 80px;
+            padding-top: 28px;
+            border-top: 1px solid #0e0d20;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 0.6rem;
+            color: #2a2844;
+            letter-spacing: 0.8px;
+        }
+
+        /* ===== RESPONSIVE ===== */
+        @media (max-width: 560px) {
+            .hero h1 { font-size: 2.6rem; letter-spacing: -1.5px; }
+            .metrics { grid-template-columns: 1fr; }
+            .avail-grid { grid-template-columns: 1fr; }
+            .contact-grid { flex-direction: column; align-items: center; }
+            nav { gap: 20px; }
+            nav a { font-size: 0.64rem; }
+            .card { padding: 26px; }
+            .card-meta { flex-wrap: wrap; gap: 14px; }
+            footer { flex-direction: column; gap: 8px; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="ambient ambient-1"></div>
+<div class="ambient ambient-2"></div>
+
+<div class="toast" id="toast">Copied to clipboard</div>
+
+<nav>
+    <a href="#experience">Experience</a>
+    <a href="#systems">Systems</a>
+    <a href="#contact">Contact</a>
+</nav>
+
+<div class="page">
+
+    <!-- ===== HERO ===== -->
+    <div class="hero">
+        <div class="available-tag">
+            <span class="dot"></span>
+            Available for hire
+        </div>
+        <h1>
+            Hey, I'm <span class="glow">RioXy</span>
+        </h1>
+        <p class="summary">
+            <strong>18 year old Roblox developer</strong> from Switzerland with
+            <strong>4 years</strong> of experience. I work in IT professionally
+            and I've been scripting on Roblox for years.
+            I write clean code, I optimize, and I deliver on deadline.
+        </p>
+    </div>
+
+    <!-- ===== METRICS ===== -->
+    <div class="metrics">
+        <div class="metric">
+            <div class="val">4</div>
+            <div class="label">Years in Luau</div>
+        </div>
+        <div class="metric">
+            <div class="val">500</div>
+            <div class="label">Peak CCU</div>
+        </div>
+        <div class="metric">
+            <div class="val">1M+</div>
+            <div class="label">Total Visits</div>
+        </div>
+    </div>
+
+    <!-- ===== EXPERIENCE ===== -->
+    <div class="section" id="experience">
+        <div class="section-header">
+            <h2>Experience</h2>
+            <div class="divider"></div>
+        </div>
+
+        <div class="card highlight-card">
+            <div class="card-top">
+                <h3>My Dog Empire</h3>
+                <span class="pill">Lead Developer</span>
+            </div>
+            <p>
+                I joined the team a few weeks after post-launch to replace the previous developer.
+                Was immediately given a 3-day deadline to script
+                an entire update. Delivered on time. Stayed on as
+                Lead Developer and handled all scripting
+                after that. During my time on the project, the game grew
+                from ~100 to ~500 concurrent players and passed 1M total visits.
+                The project is no longer maintained by the original team after the owner
+                got hacked and lost ownership of the studio.
+                I can verify my work through the official Discord server of the game.
+            </p>
+            <div class="card-meta">
+                <span><strong>~100 → ~500</strong> CCU</span>
+                <span><strong>1M+</strong> visits</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- ===== SYSTEMS ===== -->
+    <div class="section" id="systems">
+        <div class="section-header">
+            <h2>Systems Showcase</h2>
+            <div class="divider"></div>
+        </div>
+
+        <!-- RUST BUILDING -->
+        <div class="card">
+            <div class="card-top">
+                <h3>Rust-Style Building System</h3>
+                <span class="pill">Placement & Snapping</span>
+            </div>
+            <p>
+                Building system inspired by Rust.
+                Snap detection between building pieces, ghost preview
+                while placing, and restricted zone.
+                Built as a skill showcase for HiddenDevs scripter role.
+            </p>
+            <div class="card-meta">
+                <span>⏱ Build time: <strong>~3 days</strong></span>
+                <span>Type: <strong>Solo project</strong></span>
+            </div>
+            <div class="accordion-toggle" onclick="toggleVideo(this)">
+                <div class="play-icon">
+                    <svg viewBox="0 0 24 24"><polygon points="5,3 19,12 5,21"/></svg>
+                </div>
+                <span class="toggle-text">Watch showcase</span>
+                <span class="arrow">▾</span>
+            </div>
+            <div class="accordion-content">
+                <div class="video-embed-mp4">
+                    <video preload="metadata" controls playsinline>
+                        <source src="building.mp4" type="video/mp4">
+                    </video>
+                </div>
+            </div>
+        </div>
+
+        <!-- RUST INVENTORY -->
+        <div class="card">
+            <div class="card-top">
+                <h3>Rust-Style Inventory System</h3>
+                <span class="pill">UI & Data</span>
+            </div>
+            <p>
+                Inventory system inspired by Rust.
+                Grid-based item layout with drag and drop functionality, and stack management.
+            </p>
+            <div class="card-meta">
+                <span>⏱ Build time: <strong>~2 days</strong></span>
+                <span>Type: <strong>Solo project</strong></span>
+            </div>
+            <div class="accordion-toggle" onclick="toggleVideo(this)">
+                <div class="play-icon">
+                    <svg viewBox="0 0 24 24"><polygon points="5,3 19,12 5,21"/></svg>
+                </div>
+                <span class="toggle-text">Watch showcase</span>
+                <span class="arrow">▾</span>
+            </div>
+            <div class="accordion-content">
+                <div class="video-embed-mp4">
+                    <video preload="metadata" controls playsinline>
+                        <source src="inventory.mp4" type="video/mp4">
+                    </video>
+                </div>
+            </div>
+        </div>
+
+        <!-- CMD -->
+        <div class="card">
+            <div class="card-top">
+                <h3>CMD System</h3>
+                <span class="pill">UI & Logic</span>
+            </div>
+            <p>
+                Full recreation of the Windows Command Prompt inside Roblox.
+                Working command, directory tree, output rendering,
+                and error handling. Everything works like the real cmd.
+            </p>
+            <div class="card-meta">
+                <span>⏱ Build time: <strong>~2 days</strong></span>
+                <span>Type: <strong>Solo project</strong></span>
+            </div>
+            <div class="accordion-toggle" onclick="toggleVideo(this)">
+                <div class="play-icon">
+                    <svg viewBox="0 0 24 24"><polygon points="5,3 19,12 5,21"/></svg>
+                </div>
+                <span class="toggle-text">Watch showcase</span>
+                <span class="arrow">▾</span>
+            </div>
+            <div class="accordion-content">
+                <div class="video-embed-mp4">
+                    <video preload="metadata" controls playsinline>
+                        <source src="cmd.mp4" type="video/mp4">
+                    </video>
+                </div>
+            </div>
+        </div>
+
+        <!-- SLIME -->
+        <div class="card">
+            <div class="card-top">
+                <h3>Slime Movement System</h3>
+                <span class="pill">Physics & Pathfinding</span>
+            </div>
+            <p>
+                Slime companion following system for a Bee Swarm Simulator-style
+                game I had in mind. Smooth follow behavior, pathfinding,
+                and physics-based movement.
+            </p>
+            <div class="card-meta">
+                <span>⏱ Build time: <strong>~1 day</strong></span>
+                <span>Type: <strong>Solo project</strong></span>
+            </div>
+            <div class="accordion-toggle" onclick="toggleVideo(this)">
+                <div class="play-icon">
+                    <svg viewBox="0 0 24 24"><polygon points="5,3 19,12 5,21"/></svg>
+                </div>
+                <span class="toggle-text">Watch showcase</span>
+                <span class="arrow">▾</span>
+            </div>
+            <div class="accordion-content">
+                <div class="video-embed-mp4">
+                    <video preload="metadata" controls playsinline>
+                        <source src="slime.mp4" type="video/mp4">
+                    </video>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ===== AVAILABILITY ===== -->
+    <div class="section">
+        <div class="section-header">
+            <h2>Availability</h2>
+            <div class="divider"></div>
+        </div>
+        <div class="avail-grid">
+            <div class="avail-card">
+                <div class="hours">~4h / day</div>
+                <div class="period">Monday to Friday</div>
+            </div>
+            <div class="avail-card">
+                <div class="hours">~8h / day</div>
+                <div class="period">Weekends (flexible)</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ===== CONTACT ===== -->
+    <div class="section" id="contact">
+        <div class="section-header">
+            <h2>Contact me</h2>
+            <div class="divider"></div>
+        </div>
+        <div class="contact-grid">
+            <div class="contact-link" onclick="copyDiscord()">
+                <span class="letter">D</span>
+                <span>rioxyofficiel</span>
+            </div>
+            <a href="https://www.roblox.com/users/8511256082/profile" target="_blank" class="contact-link">
+                <span class="letter">R</span>
+                <span>Roblox Profile</span>
+            </a>
+        </div>
+    </div>
+
+    <footer>
+        <span>RioXy, 2025</span>
+        <span>Switzerland</span>
+    </footer>
+
+</div>
+
+<script>
+    function toggleVideo(btn) {
+        const content = btn.nextElementSibling;
+        const isOpen = content.classList.contains('open');
+
+        document.querySelectorAll('.accordion-content.open').forEach(el => {
+            el.classList.remove('open');
+            el.style.maxHeight = '0';
+            el.previousElementSibling.classList.remove('active');
+            const vid = el.querySelector('video');
+            if (vid) vid.pause();
+        });
+
+        if (!isOpen) {
+            content.classList.add('open');
+            content.style.maxHeight = content.scrollHeight + 'px';
+            btn.classList.add('active');
+        }
+    }
+
+    function copyDiscord() {
+        navigator.clipboard.writeText('rioxyofficiel').then(() => {
+            const toast = document.getElementById('toast');
+            toast.textContent = 'Copied: rioxyofficiel';
+            toast.classList.add('show');
+            setTimeout(() => toast.classList.remove('show'), 2000);
+        });
+    }
+</script>
+
+</body>
+</html>
