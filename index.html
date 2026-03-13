@@ -12,551 +12,10 @@
     <meta name="theme-color" content="#7c3aed">
 
     <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><circle cx='50' cy='50' r='42' fill='%237c3aed'/><text x='50' y='68' font-size='55' font-weight='bold' fill='white' text-anchor='middle' font-family='sans-serif'>R</text></svg>">
-
     <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=Outfit:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
-    <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; }
 
-        :root {
-            --bg: #060920;
-            --bg-card: #0b1030;
-            --bg-card-hover: #0f1540;
-            --border: #1c2458;
-            --border-hover: #2e3878;
-            --accent-violet: #8b5cf6;
-            --accent-light: #c4b5fd;
-            --accent-bright: #d8b4fe;
-            --gradient-main: linear-gradient(135deg, #3b82f6, #8b5cf6, #a855f7);
-            --text-primary: #ffffff;
-            --text-body: #dce0f5;
-            --text-label: #b0b8d8;
-        }
-
-        body {
-            font-family: 'Outfit', sans-serif;
-            background: var(--bg);
-            color: var(--text-body);
-            line-height: 1.8;
-            -webkit-font-smoothing: antialiased;
-            overflow-x: hidden;
-        }
-
-        html { scroll-behavior: smooth; }
-
-        ::selection {
-            background: rgba(139, 92, 246, 0.4);
-            color: #fff;
-        }
-
-        ::-webkit-scrollbar { width: 5px; }
-        ::-webkit-scrollbar-track { background: var(--bg); }
-        ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
-        ::-webkit-scrollbar-thumb:hover { background: var(--border-hover); }
-
-        .ambient { position: fixed; pointer-events: none; z-index: 0; }
-
-        .ambient-1 {
-            top: -300px; left: 50%; transform: translateX(-50%);
-            width: 1100px; height: 650px;
-            background: radial-gradient(ellipse, rgba(139, 92, 246, 0.14) 0%, rgba(59, 130, 246, 0.07) 40%, transparent 70%);
-        }
-
-        .ambient-2 {
-            bottom: 10%; right: -200px;
-            width: 600px; height: 600px;
-            background: radial-gradient(circle, rgba(59, 130, 246, 0.07) 0%, rgba(139, 92, 246, 0.04) 40%, transparent 70%);
-        }
-
-        .ambient-3 {
-            top: 45%; left: -300px;
-            width: 500px; height: 500px;
-            background: radial-gradient(circle, rgba(168, 85, 247, 0.06) 0%, transparent 70%);
-        }
-
-        .page {
-            max-width: 760px;
-            margin: 0 auto;
-            padding: 0 32px 80px;
-            position: relative;
-            z-index: 1;
-        }
-
-        .fade-up {
-            opacity: 0;
-            transform: translateY(25px);
-            transition: opacity 0.6s ease, transform 0.6s ease;
-        }
-
-        .fade-up.visible {
-            opacity: 1;
-            transform: translateY(0);
-        }
-
-        nav {
-            position: fixed; top: 0; left: 0; right: 0; z-index: 100;
-            padding: 0 28px; height: 58px;
-            display: flex; align-items: center; justify-content: center; gap: 40px;
-            background: rgba(6, 9, 32, 0.82);
-            backdrop-filter: blur(30px) saturate(1.3);
-            -webkit-backdrop-filter: blur(30px) saturate(1.3);
-            border-bottom: 1px solid rgba(139, 92, 246, 0.1);
-        }
-
-        nav a {
-            font-family: 'IBM Plex Mono', monospace;
-            font-size: 0.72rem; color: var(--text-label);
-            text-decoration: none; letter-spacing: 0.5px;
-            transition: color 0.3s; font-weight: 500; position: relative;
-        }
-
-        nav a::after {
-            content: ''; position: absolute; bottom: -4px; left: 0;
-            width: 0; height: 2px;
-            background: var(--gradient-main); border-radius: 1px;
-            transition: width 0.3s;
-        }
-
-        nav a:hover { color: var(--text-primary); }
-        nav a:hover::after { width: 100%; }
-
-        .hero {
-            padding-top: 150px;
-            margin-bottom: 100px;
-        }
-
-        .available-tag {
-            display: inline-flex; align-items: center; gap: 9px;
-            font-family: 'IBM Plex Mono', monospace;
-            font-size: 0.66rem; color: var(--accent-light);
-            letter-spacing: 1px; margin-bottom: 34px;
-            padding: 9px 22px; border-radius: 100px;
-            border: 1px solid rgba(139, 92, 246, 0.22);
-            background: rgba(139, 92, 246, 0.07);
-            text-transform: uppercase;
-        }
-
-        .available-tag .dot {
-            width: 7px; height: 7px;
-            background: #34d399; border-radius: 50%;
-            box-shadow: 0 0 12px rgba(52, 211, 153, 0.6);
-            animation: dotPulse 2.5s ease-in-out infinite;
-        }
-
-        @keyframes dotPulse {
-            0%, 100% { opacity: 1; box-shadow: 0 0 12px rgba(52, 211, 153, 0.6); }
-            50% { opacity: 0.3; box-shadow: 0 0 4px rgba(52, 211, 153, 0.15); }
-        }
-
-        .hero h1 {
-            font-size: 4.2rem; font-weight: 900;
-            color: var(--text-primary);
-            letter-spacing: -2.5px; line-height: 1.05;
-            margin-bottom: 30px;
-        }
-
-        .hero h1 .glow {
-            background: var(--gradient-main);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-            filter: drop-shadow(0 0 45px rgba(139, 92, 246, 0.3));
-        }
-
-        .hero .subtitle {
-            font-size: 1.12rem; color: var(--text-body);
-            max-width: 540px; font-weight: 400; line-height: 2;
-        }
-
-        .hero .subtitle strong {
-            color: var(--text-primary); font-weight: 600;
-        }
-
-        .metrics {
-            display: grid; grid-template-columns: repeat(3, 1fr);
-            gap: 1px; background: var(--border);
-            border-radius: 20px; overflow: hidden;
-            margin-bottom: 100px;
-            box-shadow: 0 0 80px rgba(139, 92, 246, 0.06);
-        }
-
-        .metric {
-            background: var(--bg-card);
-            padding: 44px 20px; text-align: center;
-            transition: background 0.5s; position: relative;
-        }
-
-        .metric::after {
-            content: ''; position: absolute;
-            bottom: 0; left: 50%; transform: translateX(-50%);
-            width: 0; height: 2px;
-            background: var(--gradient-main);
-            transition: width 0.5s;
-        }
-
-        .metric:hover::after { width: 50%; }
-        .metric:hover { background: var(--bg-card-hover); }
-
-        .metric .val {
-            font-size: 2.6rem; font-weight: 800;
-            color: var(--text-primary); letter-spacing: -1px;
-        }
-
-        .metric .label {
-            font-family: 'IBM Plex Mono', monospace;
-            font-size: 0.56rem; color: var(--text-label);
-            text-transform: uppercase; letter-spacing: 2.5px;
-            margin-top: 10px;
-        }
-
-        .section { margin-bottom: 100px; }
-        .section:last-of-type { margin-bottom: 0; }
-
-        .section-header {
-            display: flex; align-items: center;
-            gap: 20px; margin-bottom: 44px;
-        }
-
-        .section-header h2 {
-            font-size: 0.68rem; font-weight: 600;
-            text-transform: uppercase; letter-spacing: 4px;
-            color: var(--accent-light); white-space: nowrap;
-        }
-
-        .section-header .divider {
-            flex: 1; height: 1px;
-            background: linear-gradient(90deg, var(--border), transparent);
-        }
-
-        .card {
-            background: var(--bg-card);
-            border: 1px solid var(--border);
-            border-radius: 20px; padding: 42px;
-            margin-bottom: 20px;
-            transition: border-color 0.4s, transform 0.3s, box-shadow 0.4s;
-            position: relative; overflow: hidden;
-        }
-
-        .card::before {
-            content: ''; position: absolute;
-            top: 0; left: 0; right: 0; height: 1px;
-            background: linear-gradient(90deg, transparent, rgba(139, 92, 246, 0), transparent);
-            transition: background 0.5s;
-        }
-
-        .card:hover::before {
-            background: linear-gradient(90deg, transparent, rgba(139, 92, 246, 0.5), transparent);
-        }
-
-        .card:hover {
-            border-color: var(--border-hover);
-            transform: translateY(-3px);
-            box-shadow: 0 14px 50px rgba(139, 92, 246, 0.08);
-        }
-
-        .card-top {
-            display: flex; align-items: center;
-            justify-content: space-between;
-            margin-bottom: 22px; flex-wrap: wrap; gap: 12px;
-        }
-
-        .card h3 {
-            font-size: 1.3rem; font-weight: 700;
-            color: var(--text-primary); letter-spacing: -0.3px;
-        }
-
-        .pill {
-            font-family: 'IBM Plex Mono', monospace;
-            font-size: 0.58rem; letter-spacing: 0.8px;
-            color: var(--accent-light);
-            border: 1px solid rgba(139, 92, 246, 0.25);
-            background: rgba(139, 92, 246, 0.08);
-            padding: 6px 18px; border-radius: 100px;
-            font-weight: 500; text-transform: uppercase;
-        }
-
-        .card-intro {
-            font-size: 1.05rem;
-            color: var(--text-body);
-            line-height: 2;
-        }
-
-        .card-intro strong, .card-desc strong {
-            color: var(--text-primary);
-            font-weight: 600;
-        }
-
-        .card-desc {
-            font-size: 1.05rem;
-            color: var(--text-body);
-            line-height: 2;
-        }
-
-        .key-points {
-            list-style: none;
-            margin-top: 20px;
-            display: flex; flex-direction: column;
-            gap: 14px;
-        }
-
-        .key-points li {
-            display: flex; align-items: flex-start;
-            gap: 16px; font-size: 1.02rem;
-            color: var(--text-body); line-height: 1.8;
-        }
-
-        .key-points li .bullet {
-            flex-shrink: 0;
-            width: 8px; height: 8px;
-            margin-top: 10px; border-radius: 50%;
-            background: var(--gradient-main);
-            box-shadow: 0 0 12px rgba(139, 92, 246, 0.35);
-        }
-
-        .key-points li strong {
-            color: var(--text-primary); font-weight: 600;
-        }
-
-        .card-meta {
-            display: flex; gap: 30px;
-            margin-top: 28px; padding-top: 24px;
-            border-top: 1px solid var(--border);
-            font-family: 'IBM Plex Mono', monospace;
-            font-size: 0.68rem; color: var(--text-label);
-            flex-wrap: wrap;
-        }
-
-        .card-meta strong {
-            color: var(--text-primary); font-weight: 600;
-        }
-
-        .highlight-card {
-            background: linear-gradient(160deg, rgba(59, 130, 246, 0.07), rgba(139, 92, 246, 0.07), var(--bg-card));
-            border-color: rgba(139, 92, 246, 0.2);
-        }
-
-        .highlight-card:hover {
-            border-color: rgba(139, 92, 246, 0.35);
-            box-shadow: 0 14px 60px rgba(139, 92, 246, 0.12);
-        }
-
-        .accordion-toggle {
-            display: flex; align-items: center; gap: 14px;
-            margin-top: 24px; padding: 14px 22px;
-            background: rgba(139, 92, 246, 0.06);
-            border: 1px solid rgba(139, 92, 246, 0.12);
-            border-radius: 14px; cursor: pointer;
-            transition: all 0.35s; user-select: none;
-        }
-
-        .accordion-toggle:hover {
-            background: rgba(139, 92, 246, 0.12);
-            border-color: rgba(139, 92, 246, 0.28);
-        }
-
-        .accordion-toggle .play-icon {
-            width: 32px; height: 32px; border-radius: 50%;
-            background: rgba(139, 92, 246, 0.15);
-            display: flex; align-items: center; justify-content: center;
-            transition: all 0.35s; flex-shrink: 0;
-        }
-
-        .accordion-toggle:hover .play-icon {
-            background: rgba(139, 92, 246, 0.28);
-            box-shadow: 0 0 24px rgba(139, 92, 246, 0.18);
-        }
-
-        .accordion-toggle .play-icon svg {
-            width: 11px; height: 11px;
-            fill: var(--accent-bright);
-            transition: transform 0.3s;
-        }
-
-        .accordion-toggle.active .play-icon svg { transform: rotate(90deg); }
-
-        .accordion-toggle .toggle-text {
-            font-family: 'IBM Plex Mono', monospace;
-            font-size: 0.76rem; color: var(--text-body);
-            letter-spacing: 0.3px; font-weight: 500;
-        }
-
-        .accordion-toggle .arrow {
-            margin-left: auto; font-size: 0.75rem;
-            color: var(--text-label);
-            transition: transform 0.35s, color 0.35s;
-        }
-
-        .accordion-toggle.active .arrow {
-            transform: rotate(180deg);
-            color: var(--accent-bright);
-        }
-
-        .accordion-content {
-            max-height: 0; overflow: hidden;
-            transition: max-height 0.6s cubic-bezier(0.16, 1, 0.3, 1),
-                        opacity 0.4s ease, margin-top 0.4s ease;
-            opacity: 0; margin-top: 0;
-        }
-
-        .accordion-content.open { opacity: 1; margin-top: 18px; }
-
-        .video-embed-mp4 {
-            border-radius: 14px; overflow: hidden;
-            border: 1px solid var(--border);
-            background: #04061a; aspect-ratio: 16 / 9;
-        }
-
-        .video-embed-mp4 video {
-            width: 100%; height: 100%;
-            object-fit: contain; outline: none;
-            background: #04061a;
-        }
-
-        .avail-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 20px;
-        }
-
-        .avail-card {
-            background: var(--bg-card);
-            border: 1px solid var(--border);
-            border-radius: 20px; padding: 40px;
-            transition: all 0.4s; position: relative; overflow: hidden;
-        }
-
-        .avail-card::before {
-            content: ''; position: absolute;
-            top: 0; left: 0; right: 0; height: 1px;
-            background: linear-gradient(90deg, transparent, rgba(139, 92, 246, 0), transparent);
-            transition: background 0.5s;
-        }
-
-        .avail-card:hover::before {
-            background: linear-gradient(90deg, transparent, rgba(139, 92, 246, 0.45), transparent);
-        }
-
-        .avail-card:hover {
-            border-color: var(--border-hover);
-            transform: translateY(-2px);
-        }
-
-        .avail-card .hours {
-            font-size: 1.8rem; font-weight: 800;
-            color: var(--text-primary); letter-spacing: -0.5px;
-        }
-
-        .avail-card .period {
-            font-size: 0.9rem; color: var(--text-label); margin-top: 10px;
-        }
-
-        .contact-section {
-            text-align: center;
-        }
-
-        .contact-sub {
-            font-size: 1.05rem;
-            color: var(--text-body);
-            margin-bottom: 36px;
-            line-height: 1.9;
-        }
-
-        .contact-grid {
-            display: flex; justify-content: center;
-            flex-wrap: wrap; gap: 16px;
-        }
-
-        .contact-link {
-            font-family: 'IBM Plex Mono', monospace;
-            font-size: 0.76rem; font-weight: 500;
-            padding: 18px 34px; border-radius: 16px;
-            text-decoration: none;
-            border: 1px solid var(--border);
-            color: var(--text-body);
-            background: var(--bg-card);
-            transition: all 0.35s;
-            display: inline-flex; align-items: center;
-            gap: 14px; position: relative;
-            overflow: hidden; cursor: pointer;
-        }
-
-        .contact-link::before {
-            content: ''; position: absolute; inset: 0;
-            background: linear-gradient(135deg, rgba(59, 130, 246, 0.08), rgba(139, 92, 246, 0.08));
-            opacity: 0; transition: opacity 0.35s;
-        }
-
-        .contact-link:hover::before { opacity: 1; }
-
-        .contact-link:hover {
-            color: var(--text-primary);
-            border-color: rgba(139, 92, 246, 0.35);
-            transform: translateY(-3px);
-            box-shadow: 0 8px 35px rgba(139, 92, 246, 0.12);
-        }
-
-        .contact-link .letter {
-            width: 26px; height: 26px; border-radius: 8px;
-            background: rgba(139, 92, 246, 0.12);
-            display: flex; align-items: center; justify-content: center;
-            font-size: 0.62rem; color: var(--accent-bright);
-            font-weight: 600; position: relative; z-index: 1;
-            transition: background 0.35s;
-        }
-
-        .contact-link:hover .letter { background: rgba(139, 92, 246, 0.25); }
-        .contact-link span:last-child { position: relative; z-index: 1; }
-
-        .toast {
-            position: fixed; bottom: 30px; left: 50%;
-            transform: translateX(-50%) translateY(20px);
-            font-family: 'IBM Plex Mono', monospace;
-            font-size: 0.76rem; color: var(--text-primary);
-            background: rgba(139, 92, 246, 0.18);
-            border: 1px solid rgba(139, 92, 246, 0.3);
-            backdrop-filter: blur(24px);
-            padding: 14px 30px; border-radius: 14px;
-            opacity: 0; pointer-events: none;
-            transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
-            z-index: 200;
-        }
-
-        .toast.show {
-            opacity: 1;
-            transform: translateX(-50%) translateY(0);
-        }
-
-        footer {
-            margin-top: 100px; padding-top: 32px;
-            border-top: 1px solid var(--border);
-            display: flex; align-items: center; justify-content: center;
-            gap: 16px;
-            font-family: 'IBM Plex Mono', monospace;
-            font-size: 0.62rem; color: var(--text-label);
-            letter-spacing: 1px; text-transform: uppercase;
-        }
-
-        footer .footer-dot {
-            width: 3px; height: 3px;
-            background: var(--accent-violet);
-            border-radius: 50%;
-            opacity: 0.5;
-        }
-
-        @media (max-width: 560px) {
-            .hero h1 { font-size: 2.8rem; letter-spacing: -1.5px; }
-            .metrics { grid-template-columns: 1fr; }
-            .avail-grid { grid-template-columns: 1fr; }
-            .contact-grid { flex-direction: column; align-items: center; }
-            nav { gap: 18px; }
-            nav a { font-size: 0.64rem; }
-            .card { padding: 30px; }
-            .card-meta { flex-wrap: wrap; gap: 14px; }
-            footer { flex-direction: column; gap: 10px; text-align: center; }
-            .footer-dot { display: none; }
-            .page { padding: 0 22px 60px; }
-            .card h3 { font-size: 1.15rem; }
-        }
-    </style>
+    <link rel="stylesheet" href="src/css/styles.css">
+    <script src="src/js/script.js" defer></script>
 </head>
 <body>
 
@@ -666,12 +125,12 @@
             <div class="accordion-toggle" onclick="toggleVideo(this)">
                 <div class="play-icon"><svg viewBox="0 0 24 24"><polygon points="5,3 19,12 5,21"/></svg></div>
                 <span class="toggle-text">Watch showcase</span>
-                <span class="arrow">▾</span>
+                <svg class="arrow" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 640"><path fill="rgb(255, 255, 255)" d="M199.7 299.8C189.4 312.4 190.2 330.9 201.9 342.6L329.9 470.6C339.1 479.8 352.8 482.5 364.8 477.5C376.8 472.5 384.6 460.9 384.6 447.9L384.6 191.9C384.6 179 376.8 167.3 364.8 162.3C352.8 157.3 339.1 160.1 329.9 169.2L201.9 297.2L199.7 299.6z"/></svg>
             </div>
             <div class="accordion-content">
                 <div class="video-embed-mp4">
-                    <video preload="metadata" controls playsinline>
-                        <source src="building.mp4" type="video/mp4">
+                    <video preload="metadata" controls autoplay>
+                        <source src="Assets/Videos/building.mp4" type="video/mp4">
                     </video>
                 </div>
             </div>
@@ -691,12 +150,12 @@
             <div class="accordion-toggle" onclick="toggleVideo(this)">
                 <div class="play-icon"><svg viewBox="0 0 24 24"><polygon points="5,3 19,12 5,21"/></svg></div>
                 <span class="toggle-text">Watch showcase</span>
-                <span class="arrow">▾</span>
-            </div>
+                <svg class="arrow" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 640"><path fill="rgb(255, 255, 255)" d="M199.7 299.8C189.4 312.4 190.2 330.9 201.9 342.6L329.9 470.6C339.1 479.8 352.8 482.5 364.8 477.5C376.8 472.5 384.6 460.9 384.6 447.9L384.6 191.9C384.6 179 376.8 167.3 364.8 162.3C352.8 157.3 339.1 160.1 329.9 169.2L201.9 297.2L199.7 299.6z"/></svg>
+                </div>
             <div class="accordion-content">
                 <div class="video-embed-mp4">
-                    <video preload="metadata" controls playsinline>
-                        <source src="inventory.mp4" type="video/mp4">
+                    <video preload="metadata" controls autoplay>
+                        <source src="Assets/Videos/inventory.mp4" type="video/mp4">
                     </video>
                 </div>
             </div>
@@ -716,12 +175,12 @@
             <div class="accordion-toggle" onclick="toggleVideo(this)">
                 <div class="play-icon"><svg viewBox="0 0 24 24"><polygon points="5,3 19,12 5,21"/></svg></div>
                 <span class="toggle-text">Watch showcase</span>
-                <span class="arrow">▾</span>
+                <svg class="arrow" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 640"><path fill="rgb(255, 255, 255)" d="M199.7 299.8C189.4 312.4 190.2 330.9 201.9 342.6L329.9 470.6C339.1 479.8 352.8 482.5 364.8 477.5C376.8 472.5 384.6 460.9 384.6 447.9L384.6 191.9C384.6 179 376.8 167.3 364.8 162.3C352.8 157.3 339.1 160.1 329.9 169.2L201.9 297.2L199.7 299.6z"/></svg>
             </div>
             <div class="accordion-content">
                 <div class="video-embed-mp4">
-                    <video preload="metadata" controls playsinline>
-                        <source src="cmd.mp4" type="video/mp4">
+                    <video preload="metadata" controls autoplay>
+                        <source src="Assets/Videos/cmd.mp4" type="video/mp4">
                     </video>
                 </div>
             </div>
@@ -741,12 +200,12 @@
             <div class="accordion-toggle" onclick="toggleVideo(this)">
                 <div class="play-icon"><svg viewBox="0 0 24 24"><polygon points="5,3 19,12 5,21"/></svg></div>
                 <span class="toggle-text">Watch showcase</span>
-                <span class="arrow">▾</span>
+                <svg class="arrow" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 640"><path fill="rgb(255, 255, 255)" d="M199.7 299.8C189.4 312.4 190.2 330.9 201.9 342.6L329.9 470.6C339.1 479.8 352.8 482.5 364.8 477.5C376.8 472.5 384.6 460.9 384.6 447.9L384.6 191.9C384.6 179 376.8 167.3 364.8 162.3C352.8 157.3 339.1 160.1 329.9 169.2L201.9 297.2L199.7 299.6z"/></svg>
             </div>
             <div class="accordion-content">
                 <div class="video-embed-mp4">
-                    <video preload="metadata" controls playsinline>
-                        <source src="slime.mp4" type="video/mp4">
+                    <video preload="metadata" controls autoplay>
+                        <source src="Assets/Videos/slime.mp4" type="video/mp4">
                     </video>
                 </div>
             </div>
@@ -797,48 +256,6 @@
         <span class="footer-dot"></span>
         <span>Switzerland</span>
     </footer>
-
 </div>
-
-<script>
-    function toggleVideo(btn) {
-        const content = btn.nextElementSibling;
-        const isOpen = content.classList.contains('open');
-
-        document.querySelectorAll('.accordion-content.open').forEach(el => {
-            el.classList.remove('open');
-            el.style.maxHeight = '0';
-            el.previousElementSibling.classList.remove('active');
-            const vid = el.querySelector('video');
-            if (vid) vid.pause();
-        });
-
-        if (!isOpen) {
-            content.classList.add('open');
-            content.style.maxHeight = content.scrollHeight + 'px';
-            btn.classList.add('active');
-        }
-    }
-
-    function copyDiscord() {
-        navigator.clipboard.writeText('rioxyofficiel').then(() => {
-            const toast = document.getElementById('toast');
-            toast.textContent = 'Copied: rioxyofficiel';
-            toast.classList.add('show');
-            setTimeout(() => toast.classList.remove('show'), 2200);
-        });
-    }
-
-    const observer = new IntersectionObserver((entries) => {
-        entries.forEach(entry => {
-            if (entry.isIntersecting) {
-                entry.target.classList.add('visible');
-            }
-        });
-    }, { threshold: 0.08, rootMargin: '0px 0px -30px 0px' });
-
-    document.querySelectorAll('.fade-up').forEach(el => observer.observe(el));
-</script>
-
 </body>
 </html>
