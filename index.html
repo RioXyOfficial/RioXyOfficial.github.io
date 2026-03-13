@@ -15,569 +15,507 @@
 
     <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=Outfit:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        :root {
+            --bg: #060920;
+            --bg-card: #0b1030;
+            --bg-card-hover: #0f1540;
+            --border: #1c2458;
+            --border-hover: #2e3878;
+            --accent-violet: #8b5cf6;
+            --accent-light: #c4b5fd;
+            --accent-bright: #d8b4fe;
+            --gradient-main: linear-gradient(135deg, #3b82f6, #8b5cf6, #a855f7);
+            --text-primary: #ffffff;
+            --text-body: #dce0f5;
+            --text-label: #b0b8d8;
         }
 
         body {
             font-family: 'Outfit', sans-serif;
-            background: #05050e;
-            color: #9e99b8;
-            line-height: 1.7;
+            background: var(--bg);
+            color: var(--text-body);
+            line-height: 1.8;
             -webkit-font-smoothing: antialiased;
             overflow-x: hidden;
         }
 
+        html { scroll-behavior: smooth; }
+
         ::selection {
-            background: rgba(124, 58, 237, 0.35);
+            background: rgba(139, 92, 246, 0.4);
             color: #fff;
         }
 
-        .ambient {
-            position: fixed;
-            pointer-events: none;
-            z-index: 0;
-        }
+        ::-webkit-scrollbar { width: 5px; }
+        ::-webkit-scrollbar-track { background: var(--bg); }
+        ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
+        ::-webkit-scrollbar-thumb:hover { background: var(--border-hover); }
+
+        .ambient { position: fixed; pointer-events: none; z-index: 0; }
 
         .ambient-1 {
-            top: -200px;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 800px;
-            height: 500px;
-            background: radial-gradient(ellipse, rgba(124, 58, 237, 0.06) 0%, transparent 70%);
+            top: -300px; left: 50%; transform: translateX(-50%);
+            width: 1100px; height: 650px;
+            background: radial-gradient(ellipse, rgba(139, 92, 246, 0.14) 0%, rgba(59, 130, 246, 0.07) 40%, transparent 70%);
         }
 
         .ambient-2 {
-            bottom: 20%;
-            right: -200px;
-            width: 500px;
-            height: 500px;
-            background: radial-gradient(circle, rgba(76, 29, 149, 0.04) 0%, transparent 70%);
+            bottom: 10%; right: -200px;
+            width: 600px; height: 600px;
+            background: radial-gradient(circle, rgba(59, 130, 246, 0.07) 0%, rgba(139, 92, 246, 0.04) 40%, transparent 70%);
+        }
+
+        .ambient-3 {
+            top: 45%; left: -300px;
+            width: 500px; height: 500px;
+            background: radial-gradient(circle, rgba(168, 85, 247, 0.06) 0%, transparent 70%);
         }
 
         .page {
-            max-width: 720px;
+            max-width: 760px;
             margin: 0 auto;
-            padding: 0 24px 80px;
+            padding: 0 32px 80px;
             position: relative;
             z-index: 1;
         }
 
+        .fade-up {
+            opacity: 0;
+            transform: translateY(25px);
+            transition: opacity 0.6s ease, transform 0.6s ease;
+        }
+
+        .fade-up.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
         nav {
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            z-index: 100;
-            padding: 0 24px;
-            height: 58px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 36px;
-            background: rgba(5, 5, 14, 0.85);
-            backdrop-filter: blur(30px);
-            -webkit-backdrop-filter: blur(30px);
-            border-bottom: 1px solid rgba(124, 58, 237, 0.08);
+            position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+            padding: 0 28px; height: 58px;
+            display: flex; align-items: center; justify-content: center; gap: 40px;
+            background: rgba(6, 9, 32, 0.82);
+            backdrop-filter: blur(30px) saturate(1.3);
+            -webkit-backdrop-filter: blur(30px) saturate(1.3);
+            border-bottom: 1px solid rgba(139, 92, 246, 0.1);
         }
 
         nav a {
             font-family: 'IBM Plex Mono', monospace;
-            font-size: 0.72rem;
-            color: #7a7594;
-            text-decoration: none;
-            letter-spacing: 0.4px;
-            transition: color 0.4s;
-            font-weight: 500;
+            font-size: 0.72rem; color: var(--text-label);
+            text-decoration: none; letter-spacing: 0.5px;
+            transition: color 0.3s; font-weight: 500; position: relative;
         }
 
-        nav a:hover {
-            color: #c4b5fd;
+        nav a::after {
+            content: ''; position: absolute; bottom: -4px; left: 0;
+            width: 0; height: 2px;
+            background: var(--gradient-main); border-radius: 1px;
+            transition: width 0.3s;
         }
+
+        nav a:hover { color: var(--text-primary); }
+        nav a:hover::after { width: 100%; }
 
         .hero {
-            padding-top: 140px;
-            margin-bottom: 90px;
+            padding-top: 150px;
+            margin-bottom: 100px;
         }
 
         .available-tag {
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
+            display: inline-flex; align-items: center; gap: 9px;
             font-family: 'IBM Plex Mono', monospace;
-            font-size: 0.66rem;
-            color: #a78bfa;
-            letter-spacing: 0.8px;
-            margin-bottom: 28px;
-            padding: 8px 18px;
-            border-radius: 100px;
-            border: 1px solid rgba(167, 139, 250, 0.12);
-            background: rgba(167, 139, 250, 0.03);
+            font-size: 0.66rem; color: var(--accent-light);
+            letter-spacing: 1px; margin-bottom: 34px;
+            padding: 9px 22px; border-radius: 100px;
+            border: 1px solid rgba(139, 92, 246, 0.22);
+            background: rgba(139, 92, 246, 0.07);
             text-transform: uppercase;
         }
 
         .available-tag .dot {
-            width: 6px;
-            height: 6px;
-            background: #a78bfa;
-            border-radius: 50%;
-            box-shadow: 0 0 12px rgba(167, 139, 250, 0.6);
-            animation: shadowPulse 3s ease-in-out infinite;
+            width: 7px; height: 7px;
+            background: #34d399; border-radius: 50%;
+            box-shadow: 0 0 12px rgba(52, 211, 153, 0.6);
+            animation: dotPulse 2.5s ease-in-out infinite;
         }
 
-        @keyframes shadowPulse {
-            0%, 100% { opacity: 1; box-shadow: 0 0 12px rgba(167, 139, 250, 0.6); }
-            50% { opacity: 0.4; box-shadow: 0 0 4px rgba(167, 139, 250, 0.2); }
+        @keyframes dotPulse {
+            0%, 100% { opacity: 1; box-shadow: 0 0 12px rgba(52, 211, 153, 0.6); }
+            50% { opacity: 0.3; box-shadow: 0 0 4px rgba(52, 211, 153, 0.15); }
         }
 
         .hero h1 {
-            font-size: 3.8rem;
-            font-weight: 900;
-            color: #edecf5;
-            letter-spacing: -2.5px;
-            line-height: 1.02;
-            margin-bottom: 28px;
+            font-size: 4.2rem; font-weight: 900;
+            color: var(--text-primary);
+            letter-spacing: -2.5px; line-height: 1.05;
+            margin-bottom: 30px;
         }
 
         .hero h1 .glow {
-            background: linear-gradient(135deg, #a78bfa, #7c3aed, #6d28d9);
+            background: var(--gradient-main);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
-            filter: drop-shadow(0 0 30px rgba(124, 58, 237, 0.3));
+            filter: drop-shadow(0 0 45px rgba(139, 92, 246, 0.3));
         }
 
-        .hero .summary {
-            font-size: 1.05rem;
-            color: #7d7898;
-            max-width: 500px;
-            font-weight: 400;
-            line-height: 1.9;
+        .hero .subtitle {
+            font-size: 1.12rem; color: var(--text-body);
+            max-width: 540px; font-weight: 400; line-height: 2;
         }
 
-        .hero .summary strong {
-            color: #d6d0ec;
-            font-weight: 600;
+        .hero .subtitle strong {
+            color: var(--text-primary); font-weight: 600;
         }
 
         .metrics {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 1px;
-            background: #13122a;
-            border-radius: 16px;
-            overflow: hidden;
-            margin-bottom: 90px;
-            box-shadow: 0 0 60px rgba(124, 58, 237, 0.03);
+            display: grid; grid-template-columns: repeat(3, 1fr);
+            gap: 1px; background: var(--border);
+            border-radius: 20px; overflow: hidden;
+            margin-bottom: 100px;
+            box-shadow: 0 0 80px rgba(139, 92, 246, 0.06);
         }
 
         .metric {
-            background: #0a0a18;
-            padding: 36px 20px;
-            text-align: center;
-            transition: background 0.5s;
-            position: relative;
+            background: var(--bg-card);
+            padding: 44px 20px; text-align: center;
+            transition: background 0.5s; position: relative;
         }
 
         .metric::after {
-            content: '';
-            position: absolute;
-            bottom: 0;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 0;
-            height: 2px;
-            background: linear-gradient(90deg, transparent, #7c3aed, transparent);
+            content: ''; position: absolute;
+            bottom: 0; left: 50%; transform: translateX(-50%);
+            width: 0; height: 2px;
+            background: var(--gradient-main);
             transition: width 0.5s;
         }
 
-        .metric:hover::after {
-            width: 60%;
-        }
-
-        .metric:hover {
-            background: #0d0d1e;
-        }
+        .metric:hover::after { width: 50%; }
+        .metric:hover { background: var(--bg-card-hover); }
 
         .metric .val {
-            font-size: 2.2rem;
-            font-weight: 800;
-            color: #edecf5;
-            letter-spacing: -1px;
+            font-size: 2.6rem; font-weight: 800;
+            color: var(--text-primary); letter-spacing: -1px;
         }
 
         .metric .label {
             font-family: 'IBM Plex Mono', monospace;
-            font-size: 0.6rem;
-            color: #4a4668;
-            text-transform: uppercase;
-            letter-spacing: 2px;
-            margin-top: 8px;
+            font-size: 0.56rem; color: var(--text-label);
+            text-transform: uppercase; letter-spacing: 2.5px;
+            margin-top: 10px;
         }
 
-        .section {
-            margin-bottom: 80px;
-        }
-
-        .section:last-of-type {
-            margin-bottom: 0;
-        }
+        .section { margin-bottom: 100px; }
+        .section:last-of-type { margin-bottom: 0; }
 
         .section-header {
-            display: flex;
-            align-items: center;
-            gap: 18px;
-            margin-bottom: 36px;
+            display: flex; align-items: center;
+            gap: 20px; margin-bottom: 44px;
         }
 
         .section-header h2 {
-            font-size: 0.68rem;
-            font-weight: 600;
-            text-transform: uppercase;
-            letter-spacing: 3.5px;
-            color: #4a4668;
-            white-space: nowrap;
+            font-size: 0.68rem; font-weight: 600;
+            text-transform: uppercase; letter-spacing: 4px;
+            color: var(--accent-light); white-space: nowrap;
         }
 
         .section-header .divider {
-            flex: 1;
-            height: 1px;
-            background: linear-gradient(90deg, #1a1838, transparent);
+            flex: 1; height: 1px;
+            background: linear-gradient(90deg, var(--border), transparent);
         }
 
         .card {
-            background: #0a0a18;
-            border: 1px solid #13122a;
-            border-radius: 16px;
-            padding: 36px;
-            margin-bottom: 16px;
-            transition: border-color 0.5s ease, transform 0.3s ease, box-shadow 0.5s ease;
-            position: relative;
-            overflow: hidden;
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 20px; padding: 42px;
+            margin-bottom: 20px;
+            transition: border-color 0.4s, transform 0.3s, box-shadow 0.4s;
+            position: relative; overflow: hidden;
         }
 
         .card::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            height: 1px;
-            background: linear-gradient(90deg, transparent, rgba(124, 58, 237, 0), transparent);
+            content: ''; position: absolute;
+            top: 0; left: 0; right: 0; height: 1px;
+            background: linear-gradient(90deg, transparent, rgba(139, 92, 246, 0), transparent);
             transition: background 0.5s;
         }
 
         .card:hover::before {
-            background: linear-gradient(90deg, transparent, rgba(124, 58, 237, 0.3), transparent);
+            background: linear-gradient(90deg, transparent, rgba(139, 92, 246, 0.5), transparent);
         }
 
         .card:hover {
-            border-color: #1e1b3a;
-            transform: translateY(-2px);
-            box-shadow: 0 8px 40px rgba(124, 58, 237, 0.04);
+            border-color: var(--border-hover);
+            transform: translateY(-3px);
+            box-shadow: 0 14px 50px rgba(139, 92, 246, 0.08);
         }
 
         .card-top {
-            display: flex;
-            align-items: center;
+            display: flex; align-items: center;
             justify-content: space-between;
-            margin-bottom: 16px;
-            flex-wrap: wrap;
-            gap: 10px;
+            margin-bottom: 22px; flex-wrap: wrap; gap: 12px;
         }
 
         .card h3 {
-            font-size: 1.15rem;
-            font-weight: 700;
-            color: #e2dff5;
-            letter-spacing: -0.3px;
+            font-size: 1.3rem; font-weight: 700;
+            color: var(--text-primary); letter-spacing: -0.3px;
         }
 
         .pill {
             font-family: 'IBM Plex Mono', monospace;
-            font-size: 0.58rem;
-            letter-spacing: 0.8px;
-            color: #a78bfa;
-            border: 1px solid rgba(167, 139, 250, 0.12);
-            background: rgba(167, 139, 250, 0.04);
-            padding: 5px 14px;
-            border-radius: 100px;
-            font-weight: 500;
-            text-transform: uppercase;
+            font-size: 0.58rem; letter-spacing: 0.8px;
+            color: var(--accent-light);
+            border: 1px solid rgba(139, 92, 246, 0.25);
+            background: rgba(139, 92, 246, 0.08);
+            padding: 6px 18px; border-radius: 100px;
+            font-weight: 500; text-transform: uppercase;
         }
 
-        .card p {
-            font-size: 0.92rem;
-            color: #7d7898;
-            line-height: 1.85;
+        .card-intro {
+            font-size: 1.05rem;
+            color: var(--text-body);
+            line-height: 2;
+        }
+
+        .card-intro strong, .card-desc strong {
+            color: var(--text-primary);
+            font-weight: 600;
+        }
+
+        .card-desc {
+            font-size: 1.05rem;
+            color: var(--text-body);
+            line-height: 2;
+        }
+
+        .key-points {
+            list-style: none;
+            margin-top: 20px;
+            display: flex; flex-direction: column;
+            gap: 14px;
+        }
+
+        .key-points li {
+            display: flex; align-items: flex-start;
+            gap: 16px; font-size: 1.02rem;
+            color: var(--text-body); line-height: 1.8;
+        }
+
+        .key-points li .bullet {
+            flex-shrink: 0;
+            width: 8px; height: 8px;
+            margin-top: 10px; border-radius: 50%;
+            background: var(--gradient-main);
+            box-shadow: 0 0 12px rgba(139, 92, 246, 0.35);
+        }
+
+        .key-points li strong {
+            color: var(--text-primary); font-weight: 600;
         }
 
         .card-meta {
-            display: flex;
-            gap: 28px;
-            margin-top: 22px;
-            padding-top: 20px;
-            border-top: 1px solid #13122a;
+            display: flex; gap: 30px;
+            margin-top: 28px; padding-top: 24px;
+            border-top: 1px solid var(--border);
             font-family: 'IBM Plex Mono', monospace;
-            font-size: 0.66rem;
-            color: #4a4668;
+            font-size: 0.68rem; color: var(--text-label);
             flex-wrap: wrap;
         }
 
         .card-meta strong {
-            color: #9e99b8;
-            font-weight: 600;
+            color: var(--text-primary); font-weight: 600;
         }
 
         .highlight-card {
-            background: linear-gradient(160deg, rgba(124, 58, 237, 0.04), rgba(76, 29, 149, 0.01), #0a0a18);
-            border-color: rgba(124, 58, 237, 0.1);
+            background: linear-gradient(160deg, rgba(59, 130, 246, 0.07), rgba(139, 92, 246, 0.07), var(--bg-card));
+            border-color: rgba(139, 92, 246, 0.2);
         }
 
         .highlight-card:hover {
-            border-color: rgba(124, 58, 237, 0.2);
-            box-shadow: 0 8px 50px rgba(124, 58, 237, 0.06);
+            border-color: rgba(139, 92, 246, 0.35);
+            box-shadow: 0 14px 60px rgba(139, 92, 246, 0.12);
         }
 
         .accordion-toggle {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            margin-top: 20px;
-            padding: 12px 18px;
-            background: rgba(124, 58, 237, 0.04);
-            border: 1px solid rgba(124, 58, 237, 0.08);
-            border-radius: 10px;
-            cursor: pointer;
-            transition: all 0.4s;
-            user-select: none;
+            display: flex; align-items: center; gap: 14px;
+            margin-top: 24px; padding: 14px 22px;
+            background: rgba(139, 92, 246, 0.06);
+            border: 1px solid rgba(139, 92, 246, 0.12);
+            border-radius: 14px; cursor: pointer;
+            transition: all 0.35s; user-select: none;
         }
 
         .accordion-toggle:hover {
-            background: rgba(124, 58, 237, 0.07);
-            border-color: rgba(124, 58, 237, 0.15);
+            background: rgba(139, 92, 246, 0.12);
+            border-color: rgba(139, 92, 246, 0.28);
         }
 
         .accordion-toggle .play-icon {
-            width: 28px;
-            height: 28px;
-            border-radius: 50%;
-            background: rgba(124, 58, 237, 0.12);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            transition: all 0.4s;
-            flex-shrink: 0;
+            width: 32px; height: 32px; border-radius: 50%;
+            background: rgba(139, 92, 246, 0.15);
+            display: flex; align-items: center; justify-content: center;
+            transition: all 0.35s; flex-shrink: 0;
         }
 
         .accordion-toggle:hover .play-icon {
-            background: rgba(124, 58, 237, 0.2);
-            box-shadow: 0 0 20px rgba(124, 58, 237, 0.15);
+            background: rgba(139, 92, 246, 0.28);
+            box-shadow: 0 0 24px rgba(139, 92, 246, 0.18);
         }
 
         .accordion-toggle .play-icon svg {
-            width: 10px;
-            height: 10px;
-            fill: #a78bfa;
+            width: 11px; height: 11px;
+            fill: var(--accent-bright);
             transition: transform 0.3s;
         }
 
-        .accordion-toggle.active .play-icon svg {
-            transform: rotate(90deg);
-        }
+        .accordion-toggle.active .play-icon svg { transform: rotate(90deg); }
 
         .accordion-toggle .toggle-text {
             font-family: 'IBM Plex Mono', monospace;
-            font-size: 0.72rem;
-            color: #8a84a8;
-            letter-spacing: 0.3px;
-            font-weight: 500;
+            font-size: 0.76rem; color: var(--text-body);
+            letter-spacing: 0.3px; font-weight: 500;
         }
 
         .accordion-toggle .arrow {
-            margin-left: auto;
-            font-size: 0.7rem;
-            color: #4a4668;
-            transition: transform 0.4s, color 0.4s;
+            margin-left: auto; font-size: 0.75rem;
+            color: var(--text-label);
+            transition: transform 0.35s, color 0.35s;
         }
 
         .accordion-toggle.active .arrow {
             transform: rotate(180deg);
-            color: #a78bfa;
+            color: var(--accent-bright);
         }
 
         .accordion-content {
-            max-height: 0;
-            overflow: hidden;
+            max-height: 0; overflow: hidden;
             transition: max-height 0.6s cubic-bezier(0.16, 1, 0.3, 1),
-                        opacity 0.4s ease,
-                        margin-top 0.4s ease;
-            opacity: 0;
-            margin-top: 0;
+                        opacity 0.4s ease, margin-top 0.4s ease;
+            opacity: 0; margin-top: 0;
         }
 
-        .accordion-content.open {
-            opacity: 1;
-            margin-top: 16px;
-        }
+        .accordion-content.open { opacity: 1; margin-top: 18px; }
 
         .video-embed-mp4 {
-            border-radius: 10px;
-            overflow: hidden;
-            border: 1px solid #13122a;
-            background: #08081a;
-            aspect-ratio: 16 / 9;
+            border-radius: 14px; overflow: hidden;
+            border: 1px solid var(--border);
+            background: #04061a; aspect-ratio: 16 / 9;
         }
 
         .video-embed-mp4 video {
-            width: 100%;
-            height: 100%;
-            object-fit: contain;
-            outline: none;
-            background: #08081a;
-        }
-
-        .video-embed-mp4 video::-webkit-media-controls-panel {
-            background: rgba(10, 10, 24, 0.85);
+            width: 100%; height: 100%;
+            object-fit: contain; outline: none;
+            background: #04061a;
         }
 
         .avail-grid {
             display: grid;
             grid-template-columns: 1fr 1fr;
-            gap: 16px;
+            gap: 20px;
         }
 
         .avail-card {
-            background: #0a0a18;
-            border: 1px solid #13122a;
-            border-radius: 16px;
-            padding: 32px;
-            transition: all 0.4s;
-            position: relative;
-            overflow: hidden;
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 20px; padding: 40px;
+            transition: all 0.4s; position: relative; overflow: hidden;
         }
 
         .avail-card::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            height: 1px;
-            background: linear-gradient(90deg, transparent, rgba(124, 58, 237, 0), transparent);
+            content: ''; position: absolute;
+            top: 0; left: 0; right: 0; height: 1px;
+            background: linear-gradient(90deg, transparent, rgba(139, 92, 246, 0), transparent);
             transition: background 0.5s;
         }
 
         .avail-card:hover::before {
-            background: linear-gradient(90deg, transparent, rgba(124, 58, 237, 0.25), transparent);
+            background: linear-gradient(90deg, transparent, rgba(139, 92, 246, 0.45), transparent);
         }
 
         .avail-card:hover {
-            border-color: #1e1b3a;
+            border-color: var(--border-hover);
+            transform: translateY(-2px);
         }
 
         .avail-card .hours {
-            font-size: 1.6rem;
-            font-weight: 800;
-            color: #edecf5;
-            letter-spacing: -0.5px;
+            font-size: 1.8rem; font-weight: 800;
+            color: var(--text-primary); letter-spacing: -0.5px;
         }
 
         .avail-card .period {
-            font-size: 0.8rem;
-            color: #4a4668;
-            margin-top: 6px;
+            font-size: 0.9rem; color: var(--text-label); margin-top: 10px;
+        }
+
+        .contact-section {
+            text-align: center;
+        }
+
+        .contact-sub {
+            font-size: 1.05rem;
+            color: var(--text-body);
+            margin-bottom: 36px;
+            line-height: 1.9;
         }
 
         .contact-grid {
-            display: flex;
-            justify-content: center;
-            flex-wrap: wrap;
-            gap: 12px;
+            display: flex; justify-content: center;
+            flex-wrap: wrap; gap: 16px;
         }
 
         .contact-link {
             font-family: 'IBM Plex Mono', monospace;
-            font-size: 0.72rem;
-            font-weight: 500;
-            padding: 14px 28px;
-            border-radius: 12px;
+            font-size: 0.76rem; font-weight: 500;
+            padding: 18px 34px; border-radius: 16px;
             text-decoration: none;
-            border: 1px solid #13122a;
-            color: #7d7898;
-            background: #0a0a18;
-            transition: all 0.4s;
-            display: inline-flex;
-            align-items: center;
-            gap: 12px;
-            position: relative;
-            overflow: hidden;
-            cursor: pointer;
+            border: 1px solid var(--border);
+            color: var(--text-body);
+            background: var(--bg-card);
+            transition: all 0.35s;
+            display: inline-flex; align-items: center;
+            gap: 14px; position: relative;
+            overflow: hidden; cursor: pointer;
         }
 
         .contact-link::before {
-            content: '';
-            position: absolute;
-            inset: 0;
-            background: linear-gradient(135deg, rgba(124, 58, 237, 0.06), transparent);
-            opacity: 0;
-            transition: opacity 0.4s;
+            content: ''; position: absolute; inset: 0;
+            background: linear-gradient(135deg, rgba(59, 130, 246, 0.08), rgba(139, 92, 246, 0.08));
+            opacity: 0; transition: opacity 0.35s;
         }
 
-        .contact-link:hover::before {
-            opacity: 1;
-        }
+        .contact-link:hover::before { opacity: 1; }
 
         .contact-link:hover {
-            color: #edecf5;
-            border-color: rgba(124, 58, 237, 0.25);
-            transform: translateY(-2px);
-            box-shadow: 0 4px 20px rgba(124, 58, 237, 0.06);
+            color: var(--text-primary);
+            border-color: rgba(139, 92, 246, 0.35);
+            transform: translateY(-3px);
+            box-shadow: 0 8px 35px rgba(139, 92, 246, 0.12);
         }
 
         .contact-link .letter {
-            width: 22px;
-            height: 22px;
-            border-radius: 6px;
-            background: #13122a;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 0.58rem;
-            color: #a78bfa;
-            font-weight: 600;
-            position: relative;
-            z-index: 1;
-            transition: background 0.4s;
+            width: 26px; height: 26px; border-radius: 8px;
+            background: rgba(139, 92, 246, 0.12);
+            display: flex; align-items: center; justify-content: center;
+            font-size: 0.62rem; color: var(--accent-bright);
+            font-weight: 600; position: relative; z-index: 1;
+            transition: background 0.35s;
         }
 
-        .contact-link:hover .letter {
-            background: rgba(124, 58, 237, 0.15);
-        }
-
-        .contact-link span:last-child {
-            position: relative;
-            z-index: 1;
-        }
+        .contact-link:hover .letter { background: rgba(139, 92, 246, 0.25); }
+        .contact-link span:last-child { position: relative; z-index: 1; }
 
         .toast {
-            position: fixed;
-            bottom: 30px;
-            left: 50%;
+            position: fixed; bottom: 30px; left: 50%;
             transform: translateX(-50%) translateY(20px);
             font-family: 'IBM Plex Mono', monospace;
-            font-size: 0.72rem;
-            color: #edecf5;
-            background: rgba(124, 58, 237, 0.15);
-            border: 1px solid rgba(124, 58, 237, 0.2);
-            backdrop-filter: blur(20px);
-            padding: 10px 24px;
-            border-radius: 10px;
-            opacity: 0;
-            pointer-events: none;
+            font-size: 0.76rem; color: var(--text-primary);
+            background: rgba(139, 92, 246, 0.18);
+            border: 1px solid rgba(139, 92, 246, 0.3);
+            backdrop-filter: blur(24px);
+            padding: 14px 30px; border-radius: 14px;
+            opacity: 0; pointer-events: none;
             transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
             z-index: 200;
         }
@@ -588,28 +526,35 @@
         }
 
         footer {
-            margin-top: 80px;
-            padding-top: 28px;
-            border-top: 1px solid #0e0d20;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
+            margin-top: 100px; padding-top: 32px;
+            border-top: 1px solid var(--border);
+            display: flex; align-items: center; justify-content: center;
+            gap: 16px;
             font-family: 'IBM Plex Mono', monospace;
-            font-size: 0.6rem;
-            color: #2a2844;
-            letter-spacing: 0.8px;
+            font-size: 0.62rem; color: var(--text-label);
+            letter-spacing: 1px; text-transform: uppercase;
+        }
+
+        footer .footer-dot {
+            width: 3px; height: 3px;
+            background: var(--accent-violet);
+            border-radius: 50%;
+            opacity: 0.5;
         }
 
         @media (max-width: 560px) {
-            .hero h1 { font-size: 2.6rem; letter-spacing: -1.5px; }
+            .hero h1 { font-size: 2.8rem; letter-spacing: -1.5px; }
             .metrics { grid-template-columns: 1fr; }
             .avail-grid { grid-template-columns: 1fr; }
             .contact-grid { flex-direction: column; align-items: center; }
-            nav { gap: 20px; }
+            nav { gap: 18px; }
             nav a { font-size: 0.64rem; }
-            .card { padding: 26px; }
+            .card { padding: 30px; }
             .card-meta { flex-wrap: wrap; gap: 14px; }
-            footer { flex-direction: column; gap: 8px; }
+            footer { flex-direction: column; gap: 10px; text-align: center; }
+            .footer-dot { display: none; }
+            .page { padding: 0 22px 60px; }
+            .card h3 { font-size: 1.15rem; }
         }
     </style>
 </head>
@@ -617,36 +562,36 @@
 
 <div class="ambient ambient-1"></div>
 <div class="ambient ambient-2"></div>
+<div class="ambient ambient-3"></div>
 
 <div class="toast" id="toast">Copied to clipboard</div>
 
 <nav>
     <a href="#experience">Experience</a>
     <a href="#systems">Systems</a>
+    <a href="#availability">Availability</a>
     <a href="#contact">Contact</a>
 </nav>
 
 <div class="page">
-    <div class="hero">
+
+    <div class="hero fade-up">
         <div class="available-tag">
             <span class="dot"></span>
             Available for hire
         </div>
-        <h1>
-            Hey, I'm <span class="glow">RioXy</span>
-        </h1>
-        <p class="summary">
+        <h1>Hey, I'm <span class="glow">RioXy</span></h1>
+        <p class="subtitle">
             <strong>18 year old Roblox developer</strong> from Switzerland with
-            <strong>4 years</strong> of experience. I work in IT professionally
-            and I've been scripting on Roblox for years.
-            I write clean code, I optimize, and I deliver on deadline.
+            <strong>4 years</strong> of scripting experience. I work in IT professionally
+            and I've been using Roblox Studio for years.
         </p>
     </div>
 
-    <div class="metrics">
+    <div class="metrics fade-up">
         <div class="metric">
-            <div class="val">4</div>
-            <div class="label">Years in Luau</div>
+            <div class="val">4+</div>
+            <div class="label">Years Experience</div>
         </div>
         <div class="metric">
             <div class="val">500</div>
@@ -654,63 +599,72 @@
         </div>
         <div class="metric">
             <div class="val">1M+</div>
-            <div class="label">Total Visits</div>
+            <div class="label">Visits Contributed</div>
         </div>
     </div>
 
     <div class="section" id="experience">
-        <div class="section-header">
+        <div class="section-header fade-up">
             <h2>Experience</h2>
             <div class="divider"></div>
         </div>
 
-        <div class="card highlight-card">
+        <div class="card highlight-card fade-up">
             <div class="card-top">
                 <h3>Build a Dog Empire</h3>
                 <span class="pill">Lead Developer</span>
             </div>
-            <p>
-                I joined the team a few weeks after launch to replace the previous developer.
-                Was immediately given a 3-day deadline to script
-                an entire update. Delivered on time. Stayed on as
-                Lead Developer and handled all scripting
-                after that. During my time on the project, the game grew
-                from ~100 to ~500 concurrent players and passed 1M total visits.
-                The project is no longer maintained by the original team after the owner lost access to the studio.
-                I can verify my work through the official Discord server of the game.
+            <p class="card-intro">
+                Joined the team a few weeks after launch to replace the previous developer. Was given a <strong>3-day deadline</strong> to script an entire update and delivered on time.
             </p>
+            <ul class="key-points">
+                <li>
+                    <span class="bullet"></span>
+                    <span>Promoted to <strong>Lead Developer</strong>, handled all scripting from that point</span>
+                </li>
+                <li>
+                    <span class="bullet"></span>
+                    <span>Grew the game from <strong>~100 to ~500 concurrent players</strong></span>
+                </li>
+                <li>
+                    <span class="bullet"></span>
+                    <span>Game reached <strong>1M+ total visits</strong> during my time on the project</span>
+                </li>
+                <li>
+                    <span class="bullet"></span>
+                    <span>Project ended after the owner <strong>lost access to the studio</strong></span>
+                </li>
+                <li>
+                    <span class="bullet"></span>
+                    <span>Verifiable through the game's <strong>official Discord server</strong></span>
+                </li>
+            </ul>
             <div class="card-meta">
                 <span><strong>~100 → ~500</strong> CCU</span>
-                <span><strong>1M+</strong> visits</span>
+                <span><strong>1M+</strong> total visits</span>
             </div>
         </div>
     </div>
 
     <div class="section" id="systems">
-        <div class="section-header">
+        <div class="section-header fade-up">
             <h2>Systems Showcase</h2>
             <div class="divider"></div>
         </div>
 
-        <div class="card">
+        <div class="card fade-up">
             <div class="card-top">
                 <h3>Rust-Style Building System</h3>
                 <span class="pill">Placement & Snapping</span>
             </div>
-            <p>
-                Building system inspired by Rust.
-                Snap detection between building pieces, ghost preview
-                while placing and restricted zone.
-                Built as a skill showcase for HiddenDevs scripter role.
+            <p class="card-desc">
+                Building system inspired by Rust with <strong>snap detection</strong> between pieces, ghost preview while placing, and restricted placement zones. Built as a showcase for the <strong>HiddenDevs scripter role</strong>.
             </p>
             <div class="card-meta">
                 <span>⏱ Build time: <strong>~3 days</strong></span>
-                <span>Type: <strong>Solo project</strong></span>
             </div>
             <div class="accordion-toggle" onclick="toggleVideo(this)">
-                <div class="play-icon">
-                    <svg viewBox="0 0 24 24"><polygon points="5,3 19,12 5,21"/></svg>
-                </div>
+                <div class="play-icon"><svg viewBox="0 0 24 24"><polygon points="5,3 19,12 5,21"/></svg></div>
                 <span class="toggle-text">Watch showcase</span>
                 <span class="arrow">▾</span>
             </div>
@@ -723,23 +677,19 @@
             </div>
         </div>
 
-        <div class="card">
+        <div class="card fade-up">
             <div class="card-top">
                 <h3>Rust-Style Inventory System</h3>
                 <span class="pill">UI & Data</span>
             </div>
-            <p>
-                Inventory system inspired by Rust.
-                Grid-based item layout with drag & drop functionality and stack management.
+            <p class="card-desc">
+                Inventory system inspired by Rust with a <strong>grid-based layout</strong>, drag & drop, stack management, and smooth interactions.
             </p>
             <div class="card-meta">
                 <span>⏱ Build time: <strong>~2 days</strong></span>
-                <span>Type: <strong>Solo project</strong></span>
             </div>
             <div class="accordion-toggle" onclick="toggleVideo(this)">
-                <div class="play-icon">
-                    <svg viewBox="0 0 24 24"><polygon points="5,3 19,12 5,21"/></svg>
-                </div>
+                <div class="play-icon"><svg viewBox="0 0 24 24"><polygon points="5,3 19,12 5,21"/></svg></div>
                 <span class="toggle-text">Watch showcase</span>
                 <span class="arrow">▾</span>
             </div>
@@ -751,25 +701,20 @@
                 </div>
             </div>
         </div>
-        
-        <div class="card">
+
+        <div class="card fade-up">
             <div class="card-top">
                 <h3>CMD System</h3>
                 <span class="pill">UI & Logic</span>
             </div>
-            <p>
-                Full recreation of the Windows Command Prompt inside Roblox.
-                Command management, directory tree, output rendering
-                and error handling. Everything works like the real cmd.
+            <p class="card-desc">
+                Recreation of the <strong>Windows Command Prompt</strong> inside Roblox with command parsing, directory tree, output rendering, and error handling.
             </p>
             <div class="card-meta">
                 <span>⏱ Build time: <strong>~2 days</strong></span>
-                <span>Type: <strong>Solo project</strong></span>
             </div>
             <div class="accordion-toggle" onclick="toggleVideo(this)">
-                <div class="play-icon">
-                    <svg viewBox="0 0 24 24"><polygon points="5,3 19,12 5,21"/></svg>
-                </div>
+                <div class="play-icon"><svg viewBox="0 0 24 24"><polygon points="5,3 19,12 5,21"/></svg></div>
                 <span class="toggle-text">Watch showcase</span>
                 <span class="arrow">▾</span>
             </div>
@@ -782,24 +727,19 @@
             </div>
         </div>
 
-        <div class="card">
+        <div class="card fade-up">
             <div class="card-top">
                 <h3>Slime Movement System</h3>
                 <span class="pill">Physics & Pathfinding</span>
             </div>
-            <p>
-                Slime companion following system for a Bee Swarm Simulator-style
-                game I had in mind. Smooth follow behavior, pathfinding,
-                and physics-based movement.
+            <p class="card-desc">
+                Slime companion system for a Bee Swarm-style game with <strong>smooth following</strong>, pathfinding, and physics-based bouncy movement.
             </p>
             <div class="card-meta">
                 <span>⏱ Build time: <strong>~1 day</strong></span>
-                <span>Type: <strong>Solo project</strong></span>
             </div>
             <div class="accordion-toggle" onclick="toggleVideo(this)">
-                <div class="play-icon">
-                    <svg viewBox="0 0 24 24"><polygon points="5,3 19,12 5,21"/></svg>
-                </div>
+                <div class="play-icon"><svg viewBox="0 0 24 24"><polygon points="5,3 19,12 5,21"/></svg></div>
                 <span class="toggle-text">Watch showcase</span>
                 <span class="arrow">▾</span>
             </div>
@@ -813,12 +753,12 @@
         </div>
     </div>
 
-    <div class="section">
-        <div class="section-header">
+    <div class="section" id="availability">
+        <div class="section-header fade-up">
             <h2>Availability</h2>
             <div class="divider"></div>
         </div>
-        <div class="avail-grid">
+        <div class="avail-grid fade-up">
             <div class="avail-card">
                 <div class="hours">~4h / day</div>
                 <div class="period">Monday to Friday</div>
@@ -830,25 +770,31 @@
         </div>
     </div>
 
-    <div class="section" id="contact">
-        <div class="section-header">
-            <h2>Contact me</h2>
+    <div class="section contact-section" id="contact">
+        <div class="section-header fade-up">
+            <h2>Contact</h2>
             <div class="divider"></div>
         </div>
-        <div class="contact-grid">
-            <div class="contact-link" onclick="copyDiscord()">
-                <span class="letter">D</span>
-                <span>rioxyofficiel</span>
+        <div class="fade-up">
+            <p class="contact-sub">Interested? Feel free to reach out.</p>
+            <div class="contact-grid">
+                <div class="contact-link" onclick="copyDiscord()">
+                    <span class="letter">D</span>
+                    <span>rioxyofficiel</span>
+                </div>
+                <a href="https://www.roblox.com/users/8511256082/profile" target="_blank" class="contact-link">
+                    <span class="letter">R</span>
+                    <span>Roblox Profile</span>
+                </a>
             </div>
-            <a href="https://www.roblox.com/users/8511256082/profile" target="_blank" class="contact-link">
-                <span class="letter">R</span>
-                <span>Roblox Profile</span>
-            </a>
         </div>
     </div>
 
-    <footer>
-        <span>RioXy, 2026</span>
+    <footer class="fade-up">
+        <span>RioXy</span>
+        <span class="footer-dot"></span>
+        <span>2026</span>
+        <span class="footer-dot"></span>
         <span>Switzerland</span>
     </footer>
 
@@ -879,14 +825,20 @@
             const toast = document.getElementById('toast');
             toast.textContent = 'Copied: rioxyofficiel';
             toast.classList.add('show');
-            setTimeout(() => toast.classList.remove('show'), 2000);
+            setTimeout(() => toast.classList.remove('show'), 2200);
         });
     }
+
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.classList.add('visible');
+            }
+        });
+    }, { threshold: 0.08, rootMargin: '0px 0px -30px 0px' });
+
+    document.querySelectorAll('.fade-up').forEach(el => observer.observe(el));
 </script>
 
 </body>
-
 </html>
-
-
-
